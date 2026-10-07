@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>¿Quieres solucionar tu tema con la damisela? | Resolución Oficial</title>
+  <meta name="description" content="Sistema oficial de resolución de desacuerdos. Marque con una X para solucionar el tema con la damisela. Cero orgullo, 100% amor.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0a0d14;
+      --card-bg: rgba(18, 24, 38, 0.85);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-pink: #ff2d55;
+      --accent-rose: #ff477e;
+      --accent-green: #10b981;
+      --accent-purple: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --shadow-glow: 0 0 50px -10px rgba(255, 45, 85, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 0%, #1e1534 0%, #0a0d14 70%);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background grid & orbs */
+    .ambient-glow {
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 45, 85, 0.25) 0%, rgba(139, 92, 246, 0.05) 70%, transparent 100%);
+      filter: blur(60px);
+      z-index: 0;
+      pointer-events: none;
+      top: 10%;
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+      filter: blur(50px);
+      z-index: 0;
+      pointer-events: none;
+      bottom: 10%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Header Bar: WhatsApp / Engineer flair */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    /* Main Card */
+    .card {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 28px 24px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+      text-align: center;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .chat-pill {
+      display: inline-block;
+      background: rgba(255, 45, 85, 0.12);
+      color: #ff758f;
+      border: 1px solid rgba(255, 45, 85, 0.25);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .title span.highlight {
+      background: linear-gradient(135deg, #ff4d6d, #ff758f, #f72585);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .instructions {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 22px;
+    }
+
+    .quote-box {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid #ff4d6d;
+      border-radius: 0 12px 12px 0;
+      padding: 10px 14px;
+      margin-bottom: 24px;
+      text-align: left;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      font-style: italic;
+    }
+
+    .quote-box small {
+      display: block;
+      margin-top: 4px;
+      font-style: normal;
+      color: #94a3b8;
+      font-size: 0.75rem;
+    }
+
+    /* Options area */
+    .options-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      min-height: 160px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s, background 0.2s;
+    }
+
+    .option-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .option-btn.yes-btn {
+      background: linear-gradient(135deg, rgba(255, 45, 85, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+      border-color: rgba(255, 45, 85, 0.4);
+    }
+
+    .option-btn.yes-btn:hover {
+      border-color: #ff2d55;
+      box-shadow: 0 0 25px rgba(255, 45, 85, 0.35);
+      transform: scale(1.02);
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.15rem;
+    }
+
+    .option-icon {
+      font-size: 1.3rem;
+    }
+
+    /* The checkbox box */
+    .checkbox-square {
+      width: 36px;
+      height: 36px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .yes-btn:hover .checkbox-square {
+      border-color: #ff4d6d;
+    }
+
+    /* Hand drawn X effect */
+    .x-mark {
+      font-family: 'Caveat', cursive;
+      font-size: 2.4rem;
+      color: #ff2d55;
+      line-height: 1;
+      position: absolute;
+      transform: scale(0) rotate(-15deg);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-shadow: 0 0 10px rgba(255, 45, 85, 0.6);
+    }
+
+    .checked .x-mark {
+      transform: scale(1) rotate(-8deg);
+    }
+
+    .checked .checkbox-square {
+      border-color: #ff2d55;
+      background: rgba(255, 45, 85, 0.15);
+    }
+
+    /* Dodging NO button */
+    .no-btn {
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 20;
+    }
+
+    /* Result State Card */
+    .success-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .celebrate-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      animation: bounce 1.2s infinite alternate ease-in-out;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-8px) scale(1.08); }
+    }
+
+    .success-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .success-desc {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .metrics-card {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .metric-item {
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .metric-value.good {
+      color: var(--accent-green);
+    }
+
+    .metric-value.zero {
+      color: #ff4d6d;
+    }
+
+    /* Actions */
+    .action-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .wa-btn {
+      background: #25D366;
+      color: #0b1a10;
+      box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.4);
+    }
+
+    .wa-btn:hover {
+      background: #20ba59;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -5px rgba(37, 211, 102, 0.55);
+    }
+
+    .secondary-btn {
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Footer & Engineer easter egg */
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #64748b;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .engineer-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: #94a3b8;
+      cursor: pointer;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      transition: all 0.2s;
+    }
+
+    .engineer-tag:hover {
+      color: #cbd5e1;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Toast notice */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 45, 85, 0.3);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+      pointer-events: none;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Canvas for Confetti */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow"></div>
+  <div class="ambient-glow-2"></div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="container">
+    <!-- Header Status -->
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      <span>Sistema de Mediación • Ing. Soluciones v1.0</span>
+    </div>
+
+    <!-- Active Question Card -->
+    <div class="card" id="main-card">
+      <div class="chat-pill">Pregunta Oficial de Reconciliación</div>
+
+      <h1 class="title">
+        ¿Quieres solucionar tu tema con <span class="highlight">la damisela</span>?
+      </h1>
+
+      <p class="instructions">
+        Instrucción: Marque con una <strong>X</strong> su respuesta definitiva.
+      </p>
+
+      <div class="quote-box">
+        "Muchas veces perdemos las cosas más bonitas por orgullo..."
+        <small>— Extracto del chat • Consejo sabio de vida</small>
+      </div>
+
+      <div class="options-wrapper" id="options-area">
+        <!-- YES OPTION -->
+        <button class="option-btn yes-btn" id="yes-btn" onclick="handleYes()">
+          <div class="option-label">
+            <span class="option-icon">💖</span>
+            <span>SÍ, obvio</span>
+          </div>
+          <div class="checkbox-square" id="yes-box">
+            <span class="x-mark">X</span>
+          </div>
+        </button>
+
+        <!-- NO OPTION (Dodges & Plays) -->
+        <button class="option-btn no-btn" id="no-btn" onmouseover="dodgeNo()" onclick="dodgeNo(true)">
+          <div class="option-label">
+            <span class="option-icon">🥺</span>
+            <span id="no-btn-text">NO</span>
+          </div>
+          <div class="checkbox-square" id="no-box">
+            <span class="x-mark" id="no-x">X</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- SUCCESS VIEW (Hidden initially) -->
+      <div class="success-view" id="success-view">
+        <div class="celebrate-emoji">🥳💍✨</div>
+        <h2 class="success-title">¡Marcado con una X oficial!</h2>
+        <p class="success-desc">
+          El ingeniero ha procesado tu respuesta. El orgullo ha sido desactivado con éxito. Todo vuelve a estar bien. 🥰
+        </p>
+
+        <div class="metrics-card">
+          <div class="metric-item">
+            <div class="metric-label">Orgullo restante</div>
+            <div class="metric-value zero">0% 📉</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Nivel de Amor</div>
+            <div class="metric-value good">100% 📈</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Dictamen</div>
+            <div class="metric-value" style="font-size: 0.95rem;">Resuelto ✅</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Ingeniería</div>
+            <div class="metric-value" style="font-size: 0.95rem;">Certificada 🚀</div>
+          </div>
+        </div>
+
+        <a class="action-btn wa-btn" id="wa-share-btn" href="#" target="_blank" rel="noopener">
+          <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Responder en WhatsApp con la X
+        </a>
+
+        <button class="action-btn secondary-btn" onclick="copyLink()">
+          📋 Copiar Enlace para la Damisela
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="engineer-tag" onclick="toggleEngineerNote()">
+        <span>👨‍💻 "No sé, tú eres el ingeniero"</span>
+      </div>
+      <span>Diseñado con código, lógica y cero orgullo para solucionar temas serios.</span>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Audio synthesizer for cute SFX
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function playSound(type) {
+      try {
+        if (!audioCtx) audioCtx = new AudioCtx();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+
+        if (type === 'dodge') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.18);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.linearRampToValueAtTime(0, now + 0.18);
+          osc.start(now);
+          osc.stop(now + 0.18);
+        } else if (type === 'yes') {
+          // Happy high chord
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'triangle';
+            o.frequency.setValueAtTime(freq, now + i * 0.08);
+            g.gain.setValueAtTime(0.15, now + i * 0.08);
+            g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.5);
+            o.start(now + i * 0.08);
+            o.stop(now + i * 0.08 + 0.55);
+          });
+        }
+      } catch (e) {
+        // Audio optional if autoplay restricted
+      }
+    }
+
+    // Dodge NO button logic
+    const noBtn = document.getElementById('no-btn');
+    const noBtnText = document.getElementById('no-btn-text');
+    let dodgeCount = 0;
+
+    const dodgePhrases = [
+      "¿Segura(o)?",
+      "El orgullo no sirve",
+      "¿Y si miramos atrás y ya es tarde? 🥺",
+      "Error 404: NO no encontrado",
+      "¡Dale al SÍ porfa!",
+      "No me hagas esto 💔",
+      "Esa opción no existe 🤭"
+    ];
+
+    function dodgeNo(isClick = false) {
+      dodgeCount++;
+      playSound('dodge');
+
+      // Change text to something funny
+      const phrase = dodgePhrases[dodgeCount % dodgePhrases.length];
+      noBtnText.textContent = phrase;
+
+      // Random movement within window bounds
+      const maxX = Math.min(window.innerWidth - 180, 260);
+      const maxY = 180;
+      const randX = (Math.random() - 0.5) * maxX;
+      const randY = (Math.random() - 0.5) * maxY;
+
+      noBtn.style.transform = `translate(${randX}px, ${randY}px) scale(${Math.max(0.75, 1 - dodgeCount * 0.05)})`;
+
+      showToast("⚠️ El orgullo no es una opción válida en este sistema.");
+
+      // If clicked repeatedly, turn it into YES
+      if (dodgeCount >= 5 || (isClick && dodgeCount >= 3)) {
+        noBtnText.textContent = "Bueno, SÍ ❤️";
+        noBtn.classList.remove('no-btn');
+        noBtn.classList.add('yes-btn');
+        noBtn.removeAttribute('onmouseover');
+        noBtn.onclick = handleYes;
+        noBtn.style.transform = "none";
+      }
+    }
+
+    // Handle YES click
+    function handleYes() {
+      playSound('yes');
+      document.getElementById('yes-box').classList.add('checked');
+
+      // Trigger Confetti
+      fireConfetti();
+
+      // Setup WhatsApp response link
+      const currentUrl = window.location.href;
+      const waText = encodeURIComponent(`¡Listo! Ya marqué con una X oficial que SÍ queremos solucionar todo ❤️✨ (El orgullo ha sido eliminado al 100% por el ingeniero) 🤭👉 ${currentUrl}`);
+      document.getElementById('wa-share-btn').href = `https://api.whatsapp.com/send?text=${waText}`;
+
+      setTimeout(() => {
+        document.getElementById('options-area').style.display = 'none';
+        document.querySelector('.instructions').style.display = 'none';
+        document.querySelector('.quote-box').style.display = 'none';
+        document.querySelector('.title').innerHTML = '¡Dictamen: <span class="highlight">Reconciliación Total</span>! 💖';
+        document.getElementById('success-view').style.display = 'flex';
+      }, 500);
+    }
+
+    // Toast notification
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        showToast("¡Enlace copiado al portapapeles! 📋 Envíaselo a la damisela.");
+      }).catch(() => {
+        showToast("Enlace: " + window.location.href);
+      });
+    }
+
+    function toggleEngineerNote() {
+      showToast("👨‍💻 Ingeniero reporta: 'El algoritmo demostró que perder cosas bonitas por orgullo tiene 0% de eficiencia.'");
+    }
+
+    // Lightweight Canvas Confetti Engine
+    function fireConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#ff2d55', '#ff477e', '#10b981', '#8b5cf6', '#ffd166', '#06d6a0', '#ffffff'];
+
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          r: Math.random() * 6 + 4,
+          dx: (Math.random() - 0.5) * 16,
+          dy: (Math.random() - 0.7) * 16,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10,
+          tiltAngle: 0,
+          tiltAngleInc: Math.random() * 0.1 + 0.05,
+          alpha: 1,
+          shape: Math.random() > 0.4 ? 'circle' : 'heart'
+        });
+      }
+
+      let animationFrame;
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+
+        particles.forEach(p => {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.dy += 0.35; // gravity
+          p.dx *= 0.98;
+          p.tiltAngle += p.tiltAngleInc;
+          p.tilt = Math.sin(p.tiltAngle) * 12;
+          p.alpha -= 0.008;
+
+          if (p.alpha > 0) {
+            active = true;
+            ctx.save();
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.alpha;
+
+            if (p.shape === 'circle') {
+              ctx.beginPath();
+              ctx.arc(p.x + p.tilt, p.y, p.r, 0, Math.PI * 2);
+              ctx.fill();
+            } else {
+              // Heart shape
+              const size = p.r * 1.6;
+              ctx.translate(p.x + p.tilt, p.y);
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.bezierCurveTo(-size / 2, -size / 2, -size, size / 3, 0, size);
+              ctx.bezierCurveTo(size, size / 3, size / 2, -size / 2, 0, 0);
+              ctx.fill();
+            }
+            ctx.restore();
+          }
+        });
+
+        if (active) {
+          animationFrame = requestAnimationFrame(render);
+        } else {
+          cancelAnimationFrame(animationFrame);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      render();
+    }
+
+    window.addEventListener('resize', () => {
+      const canvas = document.getElementById('confetti-canvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
