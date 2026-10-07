@@ -398,10 +398,10 @@
     <!-- Reaction Alert Bubble (Highly visible message when trying to hit NO) -->
     <div class="reaction-bubble" id="reaction-box">
       <div class="reaction-tag" id="reaction-tag">
-        <span>⚠️ Recordatorio del Chat</span>
+        <span>📋 Protocolo Oficial de Mediación</span>
       </div>
       <div class="reaction-text" id="reaction-text">
-        "Muchas veces perdemos las cosas más bonitas por orgullo..." 💔
+        Elige tu respuesta con total sinceridad... 👇
       </div>
     </div>
 
@@ -531,17 +531,30 @@
         text: '«Digo esto y no más: El botón Sí se ve un 300% más atractivo.»',
         btn: 'Ya casi Sí 💕',
         emoji: '🙈'
+      },
+      {
+        tag: '🎉 Rendición Total',
+        text: '«¡El orgullo ha sido superado! Ahora presiona SÍ y solucionen todo 💕»',
+        btn: 'Bueno, SÍ 💕',
+        emoji: '🥰'
       }
     ];
 
     let n = 0;
     let escala = 1;
+    let lastTriggerTime = 0;
 
     function huir(e) {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
       }
+
+      // Prevenir disparos duplicados (touch + click simultáneos en móvil)
+      const now = Date.now();
+      if (now - lastTriggerTime < 280) return;
+      lastTriggerTime = now;
+
       playSound('jump');
 
       // Animación de temblor en la tarjeta
@@ -549,8 +562,8 @@
       void card.offsetWidth; // trigger reflow
       card.classList.add('shake-card');
 
-      // Datos del drama actual
-      const drama = dramas[n % dramas.length];
+      // Datos del drama actual (garantiza que cada uno se muestra)
+      const drama = dramas[n];
       reactionTag.innerHTML = `<span>${drama.tag}</span>`;
       reactionText.innerHTML = `${drama.text}`;
       no.textContent = drama.btn;
@@ -562,29 +575,26 @@
       reactionBox.style.animation = 'popMessage 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 
       // Movimiento visible y controlado dentro del entorno de la tarjeta
-      // Para que NUNCA desaparezca de la vista de quien interactúa
-      const offsetsX = [-70, 70, -50, 60, -90, 80];
-      const offsetsY = [-35, 35, -25, 30, -40, 25];
+      const offsetsX = [-70, 70, -50, 60, -85, 0];
+      const offsetsY = [-30, 30, -25, 25, -35, 0];
       const randX = offsetsX[n % offsetsX.length];
       const randY = offsetsY[n % offsetsY.length];
 
       no.style.transform = `translate(${randX}px, ${randY}px)`;
 
       // El botón SÍ se agranda e intensifica su brillo
-      escala += 0.18;
+      escala += 0.16;
       si.style.transform = `scale(${escala})`;
       si.style.boxShadow = `0 12px 35px rgba(255, 77, 109, ${Math.min(0.85, 0.45 + n * 0.08)})`;
 
-      n++;
-
-      // A partir del 5to intento, el botón se convierte en SÍ
-      if (n >= 5) {
-        no.textContent = "Bueno, SÍ 💕";
+      // Si llegó al estado final de rendición
+      if (n >= dramas.length - 1) {
         no.style.background = "#ff4d6d";
         no.style.color = "#ffffff";
+        no.style.transform = "none";
         no.onclick = aceptar;
-        reactionTag.innerHTML = '<span>🎉 Rendición Incondicional</span>';
-        reactionText.innerHTML = '¡El orgullo ha sido superado! Ahora dale al SÍ 💕';
+      } else {
+        n++;
       }
     }
 
