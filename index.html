@@ -201,7 +201,7 @@
       font-weight: 900;
     }
 
-    /* NO Button (Runs away!) */
+    /* NO Button (Runs away & plays) */
     #no {
       background: #f1f3f5;
       color: #495057;
@@ -210,11 +210,63 @@
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
       z-index: 20;
       white-space: nowrap;
-      transition: all 0.16s ease-out;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
     }
 
     #no:hover, #no:active {
-      background: #e9ecef;
+      background: #ffe3e8;
+      color: #c9184a;
+    }
+
+    /* Dramatic speech bubble / alert inside card */
+    .reaction-bubble {
+      background: #fff0f3;
+      border: 2px dashed #ff758f;
+      border-radius: 18px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+      transition: all 0.3s ease;
+      animation: popMessage 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popMessage {
+      0% { transform: scale(0.92); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .reaction-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #c9184a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .reaction-text {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #2b1720;
+      line-height: 1.35;
+    }
+
+    /* Shake card animation on dodge */
+    .shake-card {
+      animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(3px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
     }
 
     /* Success Card View */
@@ -343,8 +395,14 @@
       Marca con una <strong>X</strong> (o sea, toca el botón correcto) 👇
     </p>
 
-    <div class="quote-box" id="quote">
-      "Muchas veces perdemos las cosas más bonitas por orgullo..." 💔
+    <!-- Reaction Alert Bubble (Highly visible message when trying to hit NO) -->
+    <div class="reaction-bubble" id="reaction-box">
+      <div class="reaction-tag" id="reaction-tag">
+        <span>⚠️ Recordatorio del Chat</span>
+      </div>
+      <div class="reaction-text" id="reaction-text">
+        "Muchas veces perdemos las cosas más bonitas por orgullo..." 💔
+      </div>
     </div>
 
     <!-- Interactive Buttons -->
@@ -437,19 +495,44 @@
     const no = document.getElementById('no');
     const si = document.getElementById('si');
     const heroEmoji = document.getElementById('hero-emoji');
+    const reactionBox = document.getElementById('reaction-box');
+    const reactionTag = document.getElementById('reaction-tag');
+    const reactionText = document.getElementById('reaction-text');
+    const card = document.getElementById('card');
 
-    const frases = [
-      '¿Segura? 🤔',
-      'Piénsalo bien 🥺',
-      'El orgullo sale caro 🙅‍♂️',
-      'Y si miramos atrás ya puede ser tarde...',
-      'Ese botón está bloqueado 🚫',
-      'Toca el otro 👉',
-      'No me hagas esto 💔',
-      '¡El ingeniero dice que SÍ!'
+    // Mensajes dramáticos y visibles basados en el chat
+    const dramas = [
+      {
+        tag: '💔 Mensaje del Chat',
+        text: '«Muchas veces perdemos las cosas más bonitas por orgullo...»',
+        btn: 'No 🥺',
+        emoji: '🥺'
+      },
+      {
+        tag: '👨‍💻 Alerta de Ingeniería',
+        text: '«No sé, tú eres el ingeniero... ¡y este botón da error 404 de orgullo!»',
+        btn: 'No funciona 🚫',
+        emoji: '🤭'
+      },
+      {
+        tag: '⚠️ Advertencia Seria',
+        text: '«Y cuando miramos atrás ya puede ser tarde... Piénsalo bien.»',
+        btn: '¿Segura? 🏃',
+        emoji: '👀'
+      },
+      {
+        tag: '🙅‍♂️ Protocolo Anti-Orgullo',
+        text: '«El sistema detectó un intento de orgullo. Rechazado automáticamente.»',
+        btn: 'No me deja 😭',
+        emoji: '🫣'
+      },
+      {
+        tag: '💬 Última Advertencia',
+        text: '«Digo esto y no más: El botón Sí se ve un 300% más atractivo.»',
+        btn: 'Ya casi Sí 💕',
+        emoji: '🙈'
+      }
     ];
-
-    const emojis = ['🥺', '🫣', '👀', '🤔', '😭', '🤭'];
 
     let n = 0;
     let escala = 1;
@@ -461,33 +544,47 @@
       }
       playSound('jump');
 
-      // Emoji change
-      heroEmoji.textContent = emojis[n % emojis.length];
+      // Animación de temblor en la tarjeta
+      card.classList.remove('shake-card');
+      void card.offsetWidth; // trigger reflow
+      card.classList.add('shake-card');
 
-      // Jump inside viewport safely
-      no.style.position = 'fixed';
-      const padding = 20;
-      const maxX = Math.max(padding, window.innerWidth - no.offsetWidth - padding);
-      const maxY = Math.max(padding, window.innerHeight - no.offsetHeight - padding);
+      // Datos del drama actual
+      const drama = dramas[n % dramas.length];
+      reactionTag.innerHTML = `<span>${drama.tag}</span>`;
+      reactionText.innerHTML = `${drama.text}`;
+      no.textContent = drama.btn;
+      heroEmoji.textContent = drama.emoji;
 
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
+      // Re-trigger animación en el reaction box
+      reactionBox.style.animation = 'none';
+      void reactionBox.offsetWidth;
+      reactionBox.style.animation = 'popMessage 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 
-      no.style.left = `${randomX}px`;
-      no.style.top = `${randomY}px`;
-      no.textContent = frases[n++ % frases.length];
+      // Movimiento visible y controlado dentro del entorno de la tarjeta
+      // Para que NUNCA desaparezca de la vista de quien interactúa
+      const offsetsX = [-70, 70, -50, 60, -90, 80];
+      const offsetsY = [-35, 35, -25, 30, -40, 25];
+      const randX = offsetsX[n % offsetsX.length];
+      const randY = offsetsY[n % offsetsY.length];
 
-      // Yes button grows!
-      escala += 0.16;
+      no.style.transform = `translate(${randX}px, ${randY}px)`;
+
+      // El botón SÍ se agranda e intensifica su brillo
+      escala += 0.18;
       si.style.transform = `scale(${escala})`;
-      si.style.boxShadow = `0 12px 35px rgba(255, 77, 109, ${Math.min(0.8, 0.45 + n * 0.05)})`;
+      si.style.boxShadow = `0 12px 35px rgba(255, 77, 109, ${Math.min(0.85, 0.45 + n * 0.08)})`;
 
-      // If stubborn, transform into YES
-      if (n >= 6) {
+      n++;
+
+      // A partir del 5to intento, el botón se convierte en SÍ
+      if (n >= 5) {
         no.textContent = "Bueno, SÍ 💕";
         no.style.background = "#ff4d6d";
-        no.style.color = "#fff";
+        no.style.color = "#ffffff";
         no.onclick = aceptar;
+        reactionTag.innerHTML = '<span>🎉 Rendición Incondicional</span>';
+        reactionText.innerHTML = '¡El orgullo ha sido superado! Ahora dale al SÍ 💕';
       }
     }
 
@@ -510,7 +607,7 @@
       document.getElementById('hero-emoji').style.display = 'none';
       document.getElementById('main-title').style.display = 'none';
       document.getElementById('main-sub').style.display = 'none';
-      document.getElementById('quote').style.display = 'none';
+      if (reactionBox) reactionBox.style.display = 'none';
       document.getElementById('success').style.display = 'flex';
       no.style.display = 'none';
     }
